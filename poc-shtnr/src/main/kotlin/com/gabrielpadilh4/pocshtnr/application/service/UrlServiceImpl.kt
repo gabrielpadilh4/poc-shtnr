@@ -1,5 +1,6 @@
 package com.gabrielpadilh4.pocshtnr.application.service
 
+import com.gabrielpadilh4.pocshtnr.domain.exception.url.ExpiredUrlException
 import com.gabrielpadilh4.pocshtnr.domain.exception.url.InvalidUrlException
 import com.gabrielpadilh4.pocshtnr.domain.model.Url
 import com.gabrielpadilh4.pocshtnr.domain.service.UrlService
@@ -44,7 +45,19 @@ class UrlServiceImpl(
     }
 
     override fun getEncodedUrl(urlLink: String): Url {
-        TODO("Not yet implemented")
+        if (urlLink.isNullOrBlank()) {
+            throw InvalidUrlException("The short link provided is invalid")
+        }
+
+        val originalUrl =
+            urlRepository.findByShortLink(urlLink) ?: throw InvalidUrlException("The url requested not exists")
+
+        if (originalUrl.expirationDate?.isBefore(LocalDateTime.now()) == true) {
+            urlRepository.delete(originalUrl)
+            throw ExpiredUrlException("The link already expired")
+        }
+
+        return UrlInfrastructureMapper.mapEntityToDomain(originalUrl)
     }
 
     override fun removeShortLink(url: Url) {
@@ -54,8 +67,8 @@ class UrlServiceImpl(
     private fun encodeUrl(url: String): String {
         val time = LocalDateTime.now()
 
-        return Hashing.murmur3_32()
-            .hashString("${url}${time.toString()}", StandardCharsets.UTF_8)
+        return Hashing.murmur3_32_fixed()
+            .hashString("${url}${time}", StandardCharsets.UTF_8)
             .toString()
     }
 }
