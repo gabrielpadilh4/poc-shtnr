@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: poc-shtnr
+  profiles:
+    active: dev
+  management:
+    endpoint:
+      web:
+        exposure:
+          include: "*"
+      health:
+        probes:
+          enabled: true
+          add-additional-paths: true
+  springdoc:
+    version: 1.0.0
+    title: URL Shortener API
+    description: Simple API used to test a poc related to clean architecture and mongodb in spring boot
+    packagesToScan: com.gabrielpadilh4.pocshtnr
+    paths-to-match: [ '/api/v1/**' ]
+    swagger-ui:
+      use-root-path: true
+
+logging:
+  level:
+    org:
+      springframework:
+        data: debug
+      hibernate:
+        sql: debug
