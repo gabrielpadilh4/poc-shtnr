@@ -9,11 +9,13 @@ import com.gabrielpadilh4.pocshtnr.domain.interactor.url.GetEncodedUrlInteractor
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletResponse
 
@@ -26,6 +28,8 @@ class UrlController(
 ) {
 
     @PostMapping(Endpoints.Url.GENERATE)
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     fun generateShortLink(@RequestBody generateUrlRequest: GenerateUrlRequest): ResponseEntity<GeneratedUrlResponse> {
         val urlToReturn = generateShortLinkInteractor.execute(UrlApplicationMapper.mapRequestToDomain(generateUrlRequest))
 
@@ -34,6 +38,7 @@ class UrlController(
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(Endpoints.Url.REDIRECT_SHORT_LINK)
     fun redirectToOriginalUrl(@PathVariable shortLink: String, response: HttpServletResponse){
         val originalUrl = getEncodedUrlInteractor.execute(shortLink)

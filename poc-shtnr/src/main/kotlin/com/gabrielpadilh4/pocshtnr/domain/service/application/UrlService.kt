@@ -1,4 +1,4 @@
-package com.gabrielpadilh4.pocshtnr.domain.service
+package com.gabrielpadilh4.pocshtnr.domain.service.application
 
 import com.gabrielpadilh4.pocshtnr.domain.model.Url
 

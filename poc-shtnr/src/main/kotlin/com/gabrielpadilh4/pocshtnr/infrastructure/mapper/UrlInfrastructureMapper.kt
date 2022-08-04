@@ -10,7 +10,8 @@ object UrlInfrastructureMapper {
             originalLink = urlEntity.originalLink,
             shortLink = urlEntity.shortLink,
             creationDate = urlEntity.creationDate,
-            expirationDate = urlEntity.expirationDate
+            expirationDate = urlEntity.expirationDate,
+            createdBy = urlEntity.createdBy
         )
     }
 
@@ -20,7 +21,8 @@ object UrlInfrastructureMapper {
             originalLink = url.originalLink,
             shortLink = url.shortLink!!,
             creationDate = url.creationDate!!,
-            expirationDate = url.expirationDate
+            expirationDate = url.expirationDate,
+            createdBy = url.createdBy
         )
     }
 }

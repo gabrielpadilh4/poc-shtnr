@@ -2,7 +2,7 @@ package com.gabrielpadilh4.pocshtnr.application.interactor.url
 
 import com.gabrielpadilh4.pocshtnr.domain.interactor.url.GetEncodedUrlInteractor
 import com.gabrielpadilh4.pocshtnr.domain.model.Url
-import com.gabrielpadilh4.pocshtnr.domain.service.UrlService
+import com.gabrielpadilh4.pocshtnr.domain.service.application.UrlService
 import org.springframework.stereotype.Component
 
 @Component

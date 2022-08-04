@@ -3,7 +3,8 @@ package com.gabrielpadilh4.pocshtnr.application.service
 import com.gabrielpadilh4.pocshtnr.domain.exception.url.ExpiredUrlException
 import com.gabrielpadilh4.pocshtnr.domain.exception.url.InvalidUrlException
 import com.gabrielpadilh4.pocshtnr.domain.model.Url
-import com.gabrielpadilh4.pocshtnr.domain.service.UrlService
+import com.gabrielpadilh4.pocshtnr.domain.service.application.UrlService
+import com.gabrielpadilh4.pocshtnr.domain.service.infrastructure.AuthService
 import com.gabrielpadilh4.pocshtnr.infrastructure.mapper.UrlInfrastructureMapper
 import com.gabrielpadilh4.pocshtnr.infrastructure.repository.UrlRepository
 import com.google.common.hash.Hashing
@@ -14,7 +15,8 @@ import java.util.*
 
 @Service
 class UrlServiceImpl(
-    private val urlRepository: UrlRepository
+    private val urlRepository: UrlRepository,
+    private val authService: AuthService
 ) : UrlService {
     override fun generateShortLink(url: Url): Url {
         if (!url.originalLink.isNullOrBlank()) {
@@ -32,7 +34,8 @@ class UrlServiceImpl(
                 originalLink = urlToSave,
                 shortLink = encodedUrl,
                 creationDate = LocalDateTime.now(),
-                expirationDate = LocalDateTime.now().plusSeconds(60)
+                expirationDate = LocalDateTime.now().plusSeconds(60),
+                createdBy = authService.getCurrentUserName()
             )
 
             val urlEntity = urlRepository.save(UrlInfrastructureMapper.mapDomainToEntity(urlPersist))

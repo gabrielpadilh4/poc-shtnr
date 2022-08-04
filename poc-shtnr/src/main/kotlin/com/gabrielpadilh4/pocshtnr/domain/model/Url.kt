@@ -8,5 +8,6 @@ class Url(
     val originalLink: String,
     val shortLink: String?,
     val creationDate: LocalDateTime?,
-    val expirationDate: LocalDateTime?
+    val expirationDate: LocalDateTime?,
+    val createdBy: String
 )

@@ -11,7 +11,8 @@ object UrlApplicationMapper {
             originalLink = generateUrlRequest.url,
             shortLink = null,
             creationDate = null,
-            expirationDate = generateUrlRequest.expirationDate
+            expirationDate = generateUrlRequest.expirationDate,
+            createdBy = ""
         )
     }
 
